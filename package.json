@@ -1,6 +1,6 @@
 {
   "name": "vanilla-x",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Extensão dos protótipos da API Javascript nativa",
   "main": "index.js",
   "repository": "git@github.com:FilipeBeck/vanilla-x.git",
