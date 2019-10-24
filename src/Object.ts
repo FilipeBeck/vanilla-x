@@ -15,31 +15,31 @@ declare global {
 	 */
 	interface Object {
 		/** Lista de todas as chaves. */
-		readonly keys: string[]
+		readonly xKeys: string[]
 
 		/** Lista de todos os valores. */
-		readonly values: any[]
+		readonly xValues: any[]
 
 		/** Quantidade de propriedades existentes. */
-		readonly count: number
+		readonly xCount: number
 
 		/** Determina se não possui nenhuma propriedade. */
-		readonly isEmpty: boolean
+		readonly xIsEmpty: boolean
 
 		/** Verifica se `this` é do tipo `T`. */
-		is<T extends new (...args: any[]) => any>($type: T): this is T
+		xIs<T extends new (...args: any[]) => any>($type: T): this is T
 
 		/** Retorna uma versão do método ligado com `this`. O valor de retorno é cacheado internamente (duas invocações para o mesmo método retornam a mesma referência). */
-		bind<TShape extends object, K extends keyof TShape>(this: TShape, key: K): TShape[K] extends ((...args: any[]) => any )? TShape[K] : never
+		xBind<TShape extends object, K extends keyof TShape>(this: TShape, key: K): TShape[K] extends ((...args: any[]) => any )? TShape[K] : never
 
 		/** Retorna uma cópia profunda de `this`. */
-		clone<TShape extends object>(this: TShape): TShape
+		xClone<TShape extends object>(this: TShape): TShape
 
 		/** Modifica a propriedade indicada por `path`. */
-		mutate<TShape extends object>(this: TShape, ...path: Object.Cast<Object.Path<TShape>, any[]>): TShape
+		xMutate<TShape extends object>(this: TShape, ...path: Object.Cast<Object.Path<TShape>, any[]>): TShape
 
 		/** Limpa todas as propriedades falseáveis. As demais devem ser explicitadas. */
-		clear<TShape extends object>(this: TShape, newProps: Object.PartialCleanable<TShape>): TShape
+		xClear<TShape extends object>(this: TShape, newProps: Object.PartialCleanable<TShape>): TShape
 
 		/** Iterador na forma `[$chave, $valor]`. */
 		[Symbol.iterator]<TShape extends object>(this: TShape): Iterator<[string, any]>
@@ -197,7 +197,7 @@ declare global {
 const bindMap = new WeakMap<Object, WeakMap<any, any>>()
 
 incorporate(Object.prototype, {
-	is($type: any) {
+	xIs($type: any) {
 		if (this instanceof $type) {
 			return true
 		}
@@ -213,27 +213,27 @@ incorporate(Object.prototype, {
 
 		return false
 	},
-	keys: {
+	xKeys: {
 		get() {
 			return Object.keys(this)
 		}
 	},
-	values: {
+	xValues: {
 		get() {
 			return Object.keys(this).map(key => (this as any)[key])
 		}
 	},
-	count: {
+	xCount: {
 		get() {
 			return Object.keys(this).length
 		}
 	},
-	isEmpty: {
+	xIsEmpty: {
 		get() {
 			return Object.keys(this).length == 0
 		}
 	},
-	bind(this: Object, key: keyof Object) {
+	xBind(this: Object, key: keyof Object) {
 		const method: any = this[key]
 		let instanceBindings = bindMap.get(this)
 
@@ -249,14 +249,14 @@ incorporate(Object.prototype, {
 
 		return binded
 	},
-	clone(this: Object) {
+	xClone(this: Object) {
 		const cloned = this.constructor.call(null)
 
 		for (let key in this) {
 			let propOfThis = (this as any)[key]
 
 			if (typeof propOfThis == 'object') {
-				propOfThis = Object.prototype.clone.call(propOfThis)
+				propOfThis = Object.prototype.xClone.call(propOfThis)
 			}
 
 			cloned[key] = propOfThis
@@ -264,7 +264,7 @@ incorporate(Object.prototype, {
 
 		return cloned
 	},
-	mutate(this: any, ...path: any[]) {
+	xMutate(this: any, ...path: any[]) {
 		const mutatedProp = path.pop()
 
 		let iterator = this
@@ -277,7 +277,7 @@ incorporate(Object.prototype, {
 
 		return this
 	},
-	clear(this: any, newProps: any) {
+	xClear(this: any, newProps: any) {
 		for (const key in this) {
 			const newProp = newProps[key]
 

@@ -15,7 +15,7 @@ describe('Tipagem', () => {
 				name: 'dictionator'
 			}
 			// @ts-ignore
-			dictionary['count'] = 20
+			dictionary['xCount'] = 20
 		})
 
 		expect(validInferences).not.toThrow()
@@ -411,13 +411,13 @@ describe('Is', () => {
 	test('valores primitivos', () => {
 		const p1 = 3.14, p2 = 'Filipe Beck', p3 = true
 
-		expect(p1.is(Number)).toBeTruthy()
-		expect(p2.is(String)).toBeTruthy()
-		expect(p3.is(Boolean)).toBeTruthy()
+		expect(p1.xIs(Number)).toBeTruthy()
+		expect(p2.xIs(String)).toBeTruthy()
+		expect(p3.xIs(Boolean)).toBeTruthy()
 
-		expect(p1.is(String)).not.toBeTruthy()
-		expect(p2.is(Boolean)).not.toBeTruthy()
-		expect(p3.is(Number)).not.toBeTruthy()
+		expect(p1.xIs(String)).not.toBeTruthy()
+		expect(p2.xIs(Boolean)).not.toBeTruthy()
+		expect(p3.xIs(Number)).not.toBeTruthy()
 	})
 
 	test('valores estruturais', () => {
@@ -425,33 +425,33 @@ describe('Is', () => {
 
 		const c1 = new AClass(), c2 = {}, c3 = new RegExp('.*')
 
-		expect(c1.is(AClass)).toBeTruthy()
-		expect(c2.is(Object)).toBeTruthy()
-		expect(c3.is(RegExp)).toBeTruthy()
+		expect(c1.xIs(AClass)).toBeTruthy()
+		expect(c2.xIs(Object)).toBeTruthy()
+		expect(c3.xIs(RegExp)).toBeTruthy()
 
-		expect(c1.is(Object)).toBeTruthy()
-		expect(c2.is(RegExp)).not.toBeTruthy()
-		expect(c3.is(AClass)).not.toBeTruthy()
+		expect(c1.xIs(Object)).toBeTruthy()
+		expect(c2.xIs(RegExp)).not.toBeTruthy()
+		expect(c3.xIs(AClass)).not.toBeTruthy()
 	})
 })
 
 describe('Lista de chaves e valores', () => {
 	test('keys', () => {
 		const object = { a: 1, b: 2, c: 3, d: 4 }
-		expect(object.keys).toEqual(['a', 'b', 'c', 'd'])
+		expect(object.xKeys).toEqual(['a', 'b', 'c', 'd'])
 	})
 
 	test('values', () => {
 		const object = { a: 1, b: 2, c: 3, d: 4 }
-		expect(object.values).toEqual([1, 2, 3, 4])
+		expect(object.xValues).toEqual([1, 2, 3, 4])
 	})
 
 	test('isEmpty', () => {
 		const notEmptyObject = { a: 'hello' }
 		const isEmptyObject = {}
 
-		expect(notEmptyObject.isEmpty).not.toBeTruthy()
-		expect(isEmptyObject.isEmpty).toBeTruthy()
+		expect(notEmptyObject.xIsEmpty).not.toBeTruthy()
+		expect(isEmptyObject.xIsEmpty).toBeTruthy()
 	})
 
 	test('count', () => {
@@ -460,10 +460,10 @@ describe('Lista de chaves e valores', () => {
 		const withThreeProperties = { a: 'hello', b: 'cosmos', c: 6 }
 		const withFourProperties = { a: 'hello', b: 'cosmos', c: 6, d: 11 }
 
-		expect(withOneProperty.count).toBe(1)
-		expect(withTwoProperties.count).toBe(2)
-		expect(withThreeProperties.count).toBe(3)
-		expect(withFourProperties.count).toBe(4)
+		expect(withOneProperty.xCount).toBe(1)
+		expect(withTwoProperties.xCount).toBe(2)
+		expect(withThreeProperties.xCount).toBe(3)
+		expect(withFourProperties.xCount).toBe(4)
 	})
 })
 
@@ -479,18 +479,18 @@ describe('Binding', () => {
 	const beingBinded = new ToBeBinded()
 
 	test('referência correta à this', () => {
-		const bindedGetThis = beingBinded.bind('getThis')
+		const bindedGetThis = beingBinded.xBind('getThis')
 
 		expect(bindedGetThis()).toBe(beingBinded)
 	})
 
 	test('exceção em propriedades que não são funções', () => {
-		expect(() => beingBinded.bind('primitive')).toThrow()
+		expect(() => beingBinded.xBind('primitive')).toThrow()
 	})
 
 	test('cache de referência à bind já efetuado', () => {
-		const binded1 = beingBinded.bind('getThis')
-		const binded2 = beingBinded.bind('getThis')
+		const binded1 = beingBinded.xBind('getThis')
+		const binded2 = beingBinded.xBind('getThis')
 
 		expect(binded1).toBe(binded2)
 	})
@@ -514,7 +514,7 @@ describe('Clone', () => {
 		}
 	}
 
-	const clone = original.clone()
+	const clone = original.xClone()
 
 	test('identidade diferente', () => {
 		expect(clone).not.toBe(original)
@@ -533,7 +533,7 @@ describe('Mutate', () => {
 			}
 		}
 
-		const mutated = object.mutate({ a: { aa: 11 } })
+		const mutated = object.xMutate({ a: { aa: 11 } })
 
 		expect(mutated).toBe(object)
 		expect(mutated.a.aa).toBe(11)
@@ -548,7 +548,7 @@ describe('Mutate', () => {
 			}
 		}
 
-		const mutated = object.mutate('a', 'aa', { aaa: 11 })
+		const mutated = object.xMutate('a', 'aa', { aaa: 11 })
 
 		expect(mutated).toBe(object)
 		expect(object.a.aa.aaa).toBe(11)
@@ -589,7 +589,7 @@ describe('Clear', () => {
 			i: [1, 2, 3, 4]
 		}
 
-		object.clear({
+		object.xClear({
 			a: { aa: 0 },
 			d: 1984,
 			e: Math,

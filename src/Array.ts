@@ -9,16 +9,16 @@ declare global {
 	 */
 	interface Array<T> {
 		/** Primeiro elemento da lista. */
-		readonly first: T
+		readonly xFirst: T
 
 		/** Último elemento da lista. */
-		readonly last: T
+		readonly xLast: T
 
 		/** Determina se a lista está vazia. */
-		readonly isEmpty: boolean
+		readonly xIsEmpty: boolean
 
 		/** Lista de [índice, elemento]. */
-		readonly iterated: Array<[number, T]>
+		readonly xIterated: Array<[number, T]>
 	}
 	/* Inerência de `Array` */
 	namespace Array {
@@ -115,22 +115,22 @@ declare global {
 }
 
 incorporate(Array.prototype, {
-	first: {
+	xFirst: {
 		get() {
 			return this[0]
 		}
 	} as any,
-	last: {
+	xLast: {
 		get() {
 			return this[this.length - 1]
 		}
 	} as any,
-	isEmpty: {
+	xIsEmpty: {
 		get() {
 			return this.length == 0
 		}
 	} as any,
-	iterated: {
+	xIterated: {
 		get() {
 			return this.map((value: any, index: number) => [index, value])
 		}
