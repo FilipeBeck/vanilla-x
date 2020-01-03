@@ -539,7 +539,7 @@ describe('Mutate', () => {
 		expect(mutated.a.aa).toBe(11)
 	})
 
-	test('mutação de propriedade', () => {
+	test('mutação de propriedade estruturada', () => {
 		let object = {
 			a: {
 				aa: {
@@ -552,6 +552,21 @@ describe('Mutate', () => {
 
 		expect(mutated).toBe(object)
 		expect(object.a.aa.aaa).toBe(11)
+	})
+
+	test('mutação de propriedade primitiva', () => {
+		let object = {
+			a: {
+				aa: {
+					aaa: 11
+				}
+			}
+		}
+
+		const mutated = object.xMutate('a', 'aa', 'aaa', 1984)
+
+		expect(mutated).toBe(object)
+		expect(object.a.aa.aaa).toBe(1984)
 	})
 })
 

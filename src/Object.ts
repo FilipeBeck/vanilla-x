@@ -270,6 +270,15 @@ incorporate(Object.prototype, {
 		let iterator = this
 
 		for (const key of path) {
+			const nextIterator = iterator[key]
+			const typeOfNextIterator = typeof nextIterator
+
+			if (typeOfNextIterator != 'object') {
+				iterator[key] = mutatedProp
+
+				return this
+			}
+
 			iterator = iterator[key]
 		}
 
